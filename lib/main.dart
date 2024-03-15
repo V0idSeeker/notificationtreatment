@@ -36,8 +36,10 @@ class MyHomePage extends StatelessWidget {
 
       ChangeNotifierProvider(create: (context)=> LogInControler()),
       ChangeNotifierProvider(create: (context)=> HomeControler())
+
     ],
     builder: (context,child){
+      return Home();
       return LogIn();
     }
     );

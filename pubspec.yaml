@@ -29,6 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   provider:
+  atlas:
+  google_maps_flutter:
   flutter:
     sdk: flutter
 
