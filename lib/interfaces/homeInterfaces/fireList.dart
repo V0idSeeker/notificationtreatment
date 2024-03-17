@@ -19,11 +19,20 @@ class fireList extends StatelessWidget {
             itemCount: snapshot.data!.length,
             separatorBuilder: (BuildContext context, int index)=> Divider(),
             itemBuilder: (BuildContext context, int index) {
+
               return ListTile(
                 title: Text("Cords : ${snapshot.data![index].latitude} , ${snapshot.data![index].longitude}"),
                 onTap: (){
                   context.read<mapManeger>().setCenter(snapshot.data![index]);
                 },
+                trailing: MaterialButton(onPressed: () { ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: Duration(seconds: 1),
+                    content: Container(  width: MediaQuery.of(context).size.width/4,
+                        alignment: Alignment.center,
+                        child: Text('Fire is set as "Distinguished "',textAlign: TextAlign.center,)),
+                  ),
+                ); }, child : Text("Delete Fire")),
               );
             },
 

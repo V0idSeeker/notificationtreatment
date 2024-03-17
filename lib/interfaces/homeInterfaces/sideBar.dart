@@ -15,7 +15,7 @@ class sideBar extends StatelessWidget {
         Divider(),
         Text("Name :"+ controler.userName),
         Divider(),
-        Text("Wilaya :"+ controler.wilaya)
+        Text("Wilaya :"+ controler.district)
         
       ],
     );

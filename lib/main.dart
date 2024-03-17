@@ -34,10 +34,8 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (create)=>mapManeger()),
 
       ChangeNotifierProvider(create: (context)=> LogInControler()),
-      ChangeNotifierProvider(create: (context)=> HomeControler())
 
     ],
     builder: (context,child){
