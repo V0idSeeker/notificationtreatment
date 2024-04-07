@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notificationtreatment/controlers/LogInControler.dart';
 import 'package:notificationtreatment/controlers/mapManeger.dart';
 import 'package:notificationtreatment/interfaces/LogIn.dart';
-import 'package:provider/provider.dart';
+
 
 import 'controlers/HomeControler.dart';
 import 'interfaces/Home.dart';
@@ -33,15 +33,10 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
 
-      ChangeNotifierProvider(create: (context)=> LogInControler()),
-
-    ],
-    builder: (context,child){
       //return Home();
       return LogIn();
     }
-    );
+
   }
-}
+
