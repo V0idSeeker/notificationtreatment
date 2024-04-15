@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notificationtreatment/controlers/HomeControler.dart';
 
-import 'package:notificationtreatment/interfaces/homeInterfaces/fireList.dart';
-import 'package:notificationtreatment/interfaces/homeInterfaces/fireMap.dart';
-import 'package:notificationtreatment/interfaces/homeInterfaces/sideBar.dart';
+
 
 
 class Home extends StatelessWidget {
@@ -13,7 +10,9 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeControler>(
+    return Placeholder();
+    /*
+     GetBuilder<HomeControler>(
       init: HomeControler(userData) ,
         builder: (controller){
           //return Home();
@@ -45,7 +44,7 @@ class Home extends StatelessWidget {
               )
           );
         }
-    );
+    );*/
 
 
   }

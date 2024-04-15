@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:notificationtreatment/controlers/LogInControler.dart';
-import 'package:notificationtreatment/controlers/mapManeger.dart';
-import 'package:notificationtreatment/interfaces/LogIn.dart';
 
+import 'package:notificationtreatment/views/LogIn.dart';
+import 'package:notificationtreatment/views/MainInterface.dart';
 
-import 'controlers/HomeControler.dart';
-import 'interfaces/Home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +31,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-      //return Home();
+      return MainInterface();
       return LogIn();
     }
 

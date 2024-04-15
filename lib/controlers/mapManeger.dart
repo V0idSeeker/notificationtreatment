@@ -2,52 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:notificationtreatment/Modules/DatabaseManeger.dart';
 
-class mapManeger extends GetxController{
-  late MapController mc ;
-  late List<LatLng> cords ;
+import '../Modules/Fire.dart';
+
+class MapManeger extends GetxController{
+   MapController mapController= MapController() ;
+  List<LatLng> cords =[] ;
+  late MapOptions mapOptions;
+  late DatabaseManeger db;
+  late BuildContext cont;
+  double listWidth=0;
+
 
   @override
   onInit() async{
-    mc =new MapController();
+
+
+   super.onInit();
+   await setupMap();
+  }
+
+  Future<void> setupMap()async{
+    db=await DatabaseManeger();
+
+
+
+
+
     await getCords();
-    super.onInit();
+    mapController.move(LatLng(double.parse(db.respondets[0]["positionLat"].toString()),double.parse(db.respondets[0]["positionLong"].toString())), 15);
+    update();
+
+
+
 
 
   }
 
   Future<void> getCords() async{
-
-     cords = [
-      LatLng(36.751669, 3.469903),
-      LatLng(36.752121, 3.469988),
-      LatLng(36.751520, 3.467131),
-      LatLng(36.750633, 3.468428),
-
-    ];
-
-
-
+      if(cords.isNotEmpty) return;
+    cords=[];
+    List<Fire> fires=await db.getFires();
+      fires.forEach((element) {
+       cords.add(LatLng(element.latitude, element.longitude));
+     });
+      print(cords.toString());
+      update(["CircleLayer"]);
 
   }
-  Future<List<Marker>> getMarkers() async {
-    List<Marker> markers = [];
 
-    cords.forEach((element) {
-      markers.add(Marker(
-          point: element,
-
-          width: 100,
-          height: 100,
-          child: Icon(Icons.fireplace , size: 100,)) );
-    });
-    return markers;
-  }
 
   void setCenter(LatLng newCenter){
-    mc.move(newCenter, 20);
+    mapController.move(newCenter, 20);
     update();
 
+  }
+
+  void showList(){
+    if(listWidth==0)  listWidth=MediaQuery.of(cont).size.width/10;
+   else if(listWidth> MediaQuery.of(cont).size.width/10)
+     listWidth=MediaQuery.of(cont).size.width/10;
+    else listWidth=MediaQuery.of(cont).size.width/8;
+
+      update(['list']);
   }
 
 
