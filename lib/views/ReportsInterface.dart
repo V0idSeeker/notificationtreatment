@@ -20,7 +20,7 @@ class ReportsInterface extends StatelessWidget {
             children: [
              FlutterMap(
                         mapController: controller.mapController,
-                        options: MapOptions(initialZoom: 10,initialCenter: LatLng(36.750633,3.468428)),
+                        options: MapOptions(initialZoom: 1,initialCenter: LatLng(0,0)),
                  children: [
                       TileLayer(
                         urlTemplate:
@@ -29,8 +29,8 @@ class ReportsInterface extends StatelessWidget {
                          init: MapManeger(),
                            id: "CircleLayer",
                            builder:(controller) {
-                             print(controller.cords.length);
-                           return CircleLayer(circles: controller.cords.map((e) => CircleMarker(point: e,  radius: 50 , color: Colors.red.withOpacity(0.4))).toList(),);
+                           if(controller.cords.length==0) return CircleLayer(circles: []);
+                            else return CircleLayer(circles: controller.cords.map((e) => CircleMarker(point: e,  radius: 50 , color: Colors.red.withOpacity(0.4))).toList(),);
                          }
                        )
 
@@ -58,7 +58,16 @@ class ReportsInterface extends StatelessWidget {
                         width: controller.listWidth,
                         child:Column(
                           children: [
-                            Expanded(child: Container(color: Colors.blue,)),
+                            Expanded(child: ListView.separated(
+                                separatorBuilder: (context , index)=>Divider(),
+                                itemCount: controller.cords.length,
+                                itemBuilder: (context,index){
+
+                                  return ListTile(
+
+                                  );
+                                }
+                            ),),
                             MaterialButton(
                                 onPressed: (){
                                   controller.showList();
