@@ -5,10 +5,12 @@ import 'package:latlong2/latlong.dart';
 import 'package:notificationtreatment/Modules/DatabaseManeger.dart';
 
 import '../Modules/Fire.dart';
+import '../Modules/Respondent.dart';
 
 class MapManeger extends GetxController{
    MapController mapController= MapController() ;
   List<LatLng> cords =[] ;
+  late LatLng currentRespondent;
   late MapOptions mapOptions;
   late DatabaseManeger db;
   late BuildContext cont;
@@ -25,22 +27,21 @@ class MapManeger extends GetxController{
 
   Future<void> setupMap()async{
     db=await DatabaseManeger();
+    cords=[];
+    List<Fire> fires=await db.getFires();
+    fires.forEach((element) {
+      cords.add(LatLng(element.latitude, element.longitude));
+    });
+    List<Respondent> respondents= await db.getAllRespondents();
+    currentRespondent=LatLng( respondents[0].positionLat ,respondents[0].positionLong);
 
-
-
-
-
-    await getCords();
-    mapController.move(LatLng(double.parse(db.respondets[0]["positionLat"].toString()),double.parse(db.respondets[0]["positionLong"].toString())), 15);
+    mapController.move(LatLng(respondents[0].positionLat,respondents[0].positionLong), 18);
     update();
-
-
-
-
 
   }
 
-  Future<void> getCords() async{
+  Future<void> getFires() async{
+    return;
       if(cords.isNotEmpty) return;
     cords=[];
     List<Fire> fires=await db.getFires();
