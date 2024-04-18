@@ -4,38 +4,47 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:notificationtreatment/controlers/MapManeger.dart';
 
+import '../Modules/Fire.dart';
+
 class ReportsInterface extends StatelessWidget {
   const ReportsInterface({super.key});
 
   @override
   Widget build(BuildContext context) {
 
-    return GetBuilder<MapManeger>(
-      id: "ReportsInterface",
-        init: MapManeger(),
-        builder: (controller) {
-        controller.cont=context;
-        controller.listWidth=MediaQuery.of(context).size.width/10;
-          return Stack(
+    return  Stack(
             children: [
-             FlutterMap(
-                        mapController: controller.mapController,
-                        options: MapOptions(initialZoom: 1,initialCenter: LatLng(0,0)),
-                 children: [
-                      TileLayer(
-                        urlTemplate:
-                            'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',),
-                       GetBuilder<MapManeger>(
-                         init: MapManeger(),
-                           id: "CircleLayer",
-                           builder:(controller) {
-                           if(controller.cords.length==0) return CircleLayer(circles: []);
-                            else return CircleLayer(circles: controller.cords.map((e) => CircleMarker(point: e,  radius: 50 , color: Colors.red.withOpacity(0.4))).toList(),);
-                         }
-                       )
+              GetBuilder<MapManeger>(
+                id: "Map",
+                  init: MapManeger(),
+                  builder:(controller){
 
-                    ]
-                  ),
+
+                return FutureBuilder(
+                  future: controller.setupMap(),
+                  builder: (context,snapshot) {
+                    if(snapshot.connectionState==ConnectionState.waiting) return Center(child: CircularProgressIndicator(),);
+                    if(snapshot.hasError )return Center(child: Text(snapshot.error.toString()),);
+                    return FlutterMap(
+                        mapController: controller.mapController,
+                        options: controller.mapOptions,
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                            'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',),
+
+
+
+                                 CircleLayer(circles: snapshot.data!.map((e) => CircleMarker(point: e,  radius: 50 , color: Colors.red.withOpacity(0.4))).toList(),)
+
+                        ]
+                    );
+                  }
+                );
+
+
+              }),
+
 
 
               GetBuilder<MapManeger>(
@@ -43,6 +52,9 @@ class ReportsInterface extends StatelessWidget {
                 init: MapManeger(),
 
                 builder: (controller) {
+
+                  controller.cont=context;
+                  if(controller.listWidth==0)controller.showList();
 
                   var icon  ;
                   if(controller.listWidth<MediaQuery.of(context).size.width/8) icon=Icons.arrow_back ;
@@ -60,10 +72,15 @@ class ReportsInterface extends StatelessWidget {
                           children: [
                             Expanded(child: ListView.separated(
                                 separatorBuilder: (context , index)=>Divider(),
-                                itemCount: controller.cords.length,
+                                itemCount: controller.fires.length,
                                 itemBuilder: (context,index){
+                                  Fire cord =controller.fires[index];
 
                                   return ListTile(
+                                    title:Text(cord.flag) ,
+                                    onTap: (){
+                                      controller.setCenter(LatLng(cord.latitude, cord.longitude));
+                                    },
 
                                   );
                                 }
@@ -89,6 +106,5 @@ class ReportsInterface extends StatelessWidget {
               ),
             ],
           );
-        });
   }
 }

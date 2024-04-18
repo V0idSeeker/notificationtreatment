@@ -1,8 +1,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart';
-import 'package:async/async.dart';
 import 'package:notificationtreatment/Modules/Respondent.dart';
 
 import 'Fire.dart';
@@ -30,7 +30,6 @@ class DatabaseManeger {
     var response = await post(url, body: {
       "command":"getAllRespondents"
     });
-    print(response.body);
     List<dynamic> decodedResponse = jsonDecode(response.body);
     List<Respondent> listOfRespondents = decodedResponse.map((item) {
       return Respondent.fromMap(item);
@@ -38,16 +37,16 @@ class DatabaseManeger {
 return listOfRespondents;
   }
 
+Future<String?> addUser(Map<String , dynamic> data)async{
+    //respondets and manegers
+  Uri urf = Uri.http("192.168.1.111","api/index.php");
+    data["command"]="addRespondent";
+
+  var response = await post(urf, body:data );
+  int? affectedLines=int.tryParse(response.body);
+  if(affectedLines==null) return response.body;
+  else return null;
+}
 
 
-  List<Map<String, Object?>> respondets = [
-    {
-      "name": "Rezki",
-      "username": "void",
-      "password":"void",
-      "positionLat": "36.750633",
-      "positionLong": "3.468428",
-      "isManeger": false
-    }
-  ];
 }

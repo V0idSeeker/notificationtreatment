@@ -4,6 +4,7 @@ import 'package:notificationtreatment/controlers/InterfaceController.dart';
 import 'package:side_navigation/side_navigation.dart';
 
 class MainInterface extends StatelessWidget {
+  //required Map<String, Object?> userData
   const MainInterface({super.key});
 
   @override
@@ -15,6 +16,7 @@ class MainInterface extends StatelessWidget {
 
             body: Container(
               child: Stack(
+
                 children: [
 
 
@@ -22,6 +24,7 @@ class MainInterface extends StatelessWidget {
                   width: MediaQuery.of(context).size.width
                       ,child: controller.mainScreen),
                   SideNavigationBar(
+                    initiallyExpanded: false,
                     theme: SideNavigationBarTheme(
                       backgroundColor: Colors.blue,
                       togglerTheme: SideNavigationBarTogglerTheme.standard(),

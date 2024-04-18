@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notificationtreatment/controlers/LogInControler.dart';
+import 'package:notificationtreatment/views/MainInterface.dart';
 
 
-import 'Home.dart';
 
 class LogIn extends StatelessWidget {
   const LogIn({super.key});
@@ -60,7 +60,8 @@ class LogIn extends StatelessWidget {
                           if (formkey.currentState!.validate()) {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Home(userData: controller.userdata,) ),
+                              //userData: controller.userdata
+                              MaterialPageRoute(builder: (context) => MainInterface() ),
                             );
                           } else
                             return null;
