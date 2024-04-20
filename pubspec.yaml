@@ -29,7 +29,6 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   http:
-  sqflite_common:
   get:
   flutter_map:
   latlong2:

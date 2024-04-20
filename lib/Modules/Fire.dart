@@ -23,7 +23,7 @@ class Fire {
 
   }
 
-  void setImage8(Uint8List img) {
+  void setImage(Uint8List img) {
     image = img;
   }
 
@@ -41,27 +41,38 @@ class Fire {
     this.latitude=double.parse(map["locationLat"].toString());
     this.flag=map["flag"].toString();
     this.flagDate=DateTime.parse(map["flagDate"].toString());
+    try {
+      this.image = base64Decode(map["image"]);
+    }catch(e){
+      this.image=null;
+    }
 
-    /*if(map["audio"]!=null){
-  List<String>  a=map["audio"].toString().replaceAll('[', '').replaceAll(']', '').split(',');
-  this.audiobits=Uint8List.fromList(a.map((e) => int.parse(e)).toList());
- }else this.audiobits=null;
-*/
+
     this.audiobits=null;
-  //  List<String>  p=map["image"].toString().replaceAll('[', '').replaceAll(']', '').split(',');
-   // this.image=Uint8List.fromList(p.map((e) => int.parse(e)).toList());
+
+  }
+  Map<String , dynamic>toMap(){
+    return {
+      "locationLat":latitude,
+      "locationLong":longitude,
+      "image":image,
+      "flag":flag,
+      "flagDate":flagDate,
+
+    };
   }
 
 
 
 
 
-
-@override
+  @override
   String toString() {
 
     return """
     [ Longtitude :$longitude , Latitude :$latitude ,  flag :$flag ,
+    date $flagDate,
+    
     ]
     """;
   }
