@@ -1,10 +1,10 @@
-class Respondent{
-  late int respondentId , infoId;
+class Admin{
+  late int adminId , infoId;
   late String firstName , lastName , city , username , password , accountStatus;
   late DateTime birthDate;
-
-  Respondent.fromMap(Map<String , dynamic>map){
-    respondentId=int.parse(map["respondentId"]);
+  
+  Admin.fromMap(Map<String , dynamic>map){
+    adminId=int.parse(map["adminId"]);
     infoId=int.parse(map["infoId"]);
     firstName=map["firstName"];
     lastName=map["lastName"];
@@ -17,14 +17,13 @@ class Respondent{
 
   @override
   String toString() {
-    return """ respondent: {
-    respondentId: $respondentId, infoId: $infoId,
+    return """ Admin: {
+    adminId: $adminId, infoId: $infoId,
     firstName: $firstName, lastName: $lastName, birthDate: $birthDate
     city: $city,
     username: $username, password: $password, accountStatus: $accountStatus
     } """;
   }
-
 
 
 }

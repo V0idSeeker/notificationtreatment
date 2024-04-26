@@ -156,8 +156,11 @@ class ManegeAccounts extends StatelessWidget {
                       ),
                       ElevatedButton(
                           onPressed: () async {
+                            controller.getinfo();
 
-                            if (!formkey.currentState!.validate()) return null;
+                            /*
+
+                             if (!formkey.currentState!.validate()) return null;
                             String title="";
                             String content="";
                             controller.data["isManager"]=isManeger.toString();
@@ -187,7 +190,7 @@ class ManegeAccounts extends StatelessWidget {
 
                               );
 
-                            });
+                            });*/
 
 
                           }

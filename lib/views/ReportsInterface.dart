@@ -77,10 +77,10 @@ class ReportsInterface extends StatelessWidget {
                                   Fire cord =controller.fires[index];
 
                                   return ListTile(
-                                    title:Text(cord.flag) ,
-                                    onTap: (){
-                                      controller.setCenter(LatLng(cord.latitude, cord.longitude));
-                                    },
+                                    //title:Text(cord.flag) ,
+                                    //onTap: (){
+                                    //  controller.setCenter(LatLng(cord.latitude, cord.longitude));
+                                    //},
 
                                   );
                                 }

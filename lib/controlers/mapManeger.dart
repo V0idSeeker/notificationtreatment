@@ -29,8 +29,8 @@ class MapManeger extends GetxController{
    setUp()async {
      db=await DatabaseManeger();
      fires=await db.getFires();
-     List<Respondent> respondents= await db.getAllRespondents();
-     currentRespondent=LatLng( respondents[0].positionLat ,respondents[0].positionLong);
+     //List<Respondent> respondents= await db.getAllRespondents();
+     currentRespondent=LatLng(0, 0);
      //mapController.move(LatLng(respondents[0].positionLat,respondents[0].positionLong), 18);
 
 
@@ -41,8 +41,8 @@ class MapManeger extends GetxController{
     mapOptions=MapOptions(initialCenter: currentRespondent , initialZoom: 18);
 
 
-
-    return  this.fires.map((e) => LatLng(e.latitude, e.longitude)).toList();
+    return [];
+    //return  this.fires.map((e) => LatLng(e.latitude, e.longitude)).toList();
 
 
 
