@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'package:notificationtreatment/views/LogIn.dart';
-import 'package:notificationtreatment/views/MainInterface.dart';
 
 
 void main() {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -31,7 +31,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-      return MainInterface();
+
       return LogIn();
     }
 

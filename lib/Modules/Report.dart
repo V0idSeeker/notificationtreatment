@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+
 class Report {
 
   //attributes
@@ -5,9 +9,50 @@ late int reportId  ;
 int? fireId;
 String reportStatus="onReview";
 late String city,addr,resourceType,resourcePath;
-String? audioPath , description;
+String? audioPath , description , phoneNumber;
 late double positionLat , positionLong;
 late DateTime reportDate;
+
+Report(){
+  reportId=0;
+  this.city="";
+  this.addr="";
+  this.resourceType="";
+  this.resourcePath="";
+  this.positionLat=0;
+  this.positionLong=0;
+  this.reportDate=DateTime.now();
+}
+
+setCity(String city )=>this.city=city.replaceAll("\"", "").replaceAll("'", "");
+setAddr(String addr )=>this.addr=addr.replaceAll("\"", "").replaceAll("'", "");
+setResourceType(String resourceType )=>this.resourceType=resourceType;
+setResourcePath(String resourcePath )=>this.resourcePath=resourcePath;
+setAudioPath(String? audioPath )=>this.audioPath=audioPath;
+setDescription(String? description )=>this.description= description==null ? description : description.replaceAll(RegExp(r'^(?![a-zA-Z0-9_\s]+$).*'), "");
+setPhoneNumber(String? phoneNumber )=>this.phoneNumber=phoneNumber;
+setPositionLat(double positionLat )=>this.positionLat=positionLat;
+setPositionLong(double positionLong )=>this.positionLong=positionLong;
+setReportDate(DateTime reportDate )=>this.reportDate=reportDate;
+
+
+deleteFiles()async{
+  File(resourcePath).delete();
+  if(audioPath!=null && audioPath!.isNotEmpty)
+    File(audioPath!).delete();
+
+}
+
+Map<String , dynamic> toMap(){
+  return {
+  "reportId" : reportId.toString(), "fireId" : fireId.toString(), "reportStatus" : reportStatus, "reportDate" : reportDate.toString(),
+    "positionLat" : positionLat.toString(), "positionLong" : positionLong.toString(),
+  "city" : city, "addr" : addr,
+  "resourceType" : resourceType, "resourcePath" : resourcePath, "audioPath" : audioPath,
+  "description" : description ,"phoneNumber" :phoneNumber
+};
+
+}
 
 
 Report.fromMap(Map<String , dynamic>map){
@@ -17,12 +62,13 @@ Report.fromMap(Map<String , dynamic>map){
   city=map['city'];
   addr=map['addr'];
   resourceType=map['resourceType'];
-  resourcePath=map['resourcePath'];
-  audioPath=map['audioPath'];
-  description=map['description'];
+  resourcePath=map['resourcePath'].toString()[0]==" "?map['resourcePath'].toString().replaceRange(0, 1, "") : map['resourcePath'] ;
+  audioPath=map['audioPath'].toString()[0]==" "?map['audioPath'].toString().replaceRange(0,1,"") : map['audioPath'].toString() ;
+  description=map['description']==null ? "No Description Attached" :map['description'];
+  phoneNumber=map["phoneNumber"]==null ? "No Phone number Attached" :map['phoneNumber'];
   positionLat=double.parse(map['positionLat']);
   positionLong=double.parse(map['positionLong']);
-  reportDate=DateTime.parse(map['reportDate']);
+  reportDate=DateTime.parse(map['reportDate'].toString());
 }
 
 @override
@@ -32,7 +78,7 @@ Report.fromMap(Map<String , dynamic>map){
     , positionLat : $positionLat, positionLong : $positionLong, 
     city : $city, addr : $addr, 
     resourceType : $resourceType, resourcePath : $resourcePath, audioPath : $audioPath,
-     description : $description 
+     description : $description ,phoneNumber :$phoneNumber
     }""";
   }
 
