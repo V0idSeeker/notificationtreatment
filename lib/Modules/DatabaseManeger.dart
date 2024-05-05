@@ -124,6 +124,18 @@ class DatabaseManeger {
 
   }
 
+  Future<bool> updateFireStatus (int fireId , int firefighterId , String newStatus)async{
+    var response =await post(url ,body:{
+      "command": "updateFireStatus",
+      "fireId": fireId.toString(),
+      "firefighterId": firefighterId.toString(),
+      "newStatus" : newStatus.toString()
+    });
+    Map<String ,dynamic> decodedResponse = jsonDecode(response.body);
+    return bool.parse(decodedResponse["success1"].toString()) && bool.parse(decodedResponse["success2"].toString());
+
+  }
+
 //only for user & fighter
   Future<bool> sendReport(Report report) async {
     var request = MultipartRequest('POST', url);
