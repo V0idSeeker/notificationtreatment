@@ -70,13 +70,18 @@ class ReviewReport extends StatelessWidget {
                               height: 400,
                             ),
                           )
-                        :Stack(
+                        :FutureBuilder(
+                        future: controller.setVideoPlayer(),
+                        builder: (context,snapshot) {
+                          if(snapshot.connectionState==ConnectionState.waiting) return CircularProgressIndicator();
+                          if(snapshot.hasError)return Text(snapshot.error.toString());
+                          return Stack(
                       alignment: Alignment.bottomCenter,
                             children:[ Container(
                                 width: controller.videoPlayerController.value.size.width/2,
                                 height:controller.videoPlayerController.value.size.height/2,
-                                child: VideoPlayer(
-                                    controller.videoPlayerController)),
+                                child:  VideoPlayer(
+                                        controller.videoPlayerController)),
                             ElevatedButton(onPressed: (){
                               controller.videoPlayerController.value.isPlaying
                                   ? controller.videoPlayerController.pause()
@@ -84,7 +89,9 @@ class ReviewReport extends StatelessWidget {
                             }, child: Text("play"))
 
                             ]
-                          ),
+                          );
+                        }
+                    ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

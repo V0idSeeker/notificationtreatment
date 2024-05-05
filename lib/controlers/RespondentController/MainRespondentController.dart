@@ -84,16 +84,7 @@ class MainRespondentController extends GetxController{
         update(["ReportList","ReportPositions"]); }
     else {
       selectedReport=reportsList![id];
-      if(selectedReport.resourceType!="image") {
-      try {
-        videoPlayerController = VideoPlayerController.networkUrl(
-            Uri.http(
-                "192.168.1.111" ,"api/${selectedReport.resourcePath}"));
-        await videoPlayerController.initialize();
-      }catch(e){
-        print (e.toString());
-    }
-      }
+
       if(selectedReport.audioPath!=null&&selectedReport.audioPath!="null"){
 
 
@@ -102,6 +93,15 @@ class MainRespondentController extends GetxController{
 
 
     }
+
+  }
+
+  Future <void> setVideoPlayer()async{
+    videoPlayerController = VideoPlayerController.networkUrl(
+        Uri.http(
+            "192.168.1.111" ,"api/${selectedReport.resourcePath}"));
+    await videoPlayerController.initialize();
+
   }
   Future<void> reportTreatment()async{
     //invalidate
