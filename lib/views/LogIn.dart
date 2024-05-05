@@ -40,7 +40,6 @@ class LogIn extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           TextFormField(
-                            initialValue: "void",
                             textAlign: TextAlign.center,
                             decoration:
                                 InputDecoration(labelText: "Username :"),
@@ -52,7 +51,6 @@ class LogIn extends StatelessWidget {
                             },
                           ),
                           TextFormField(
-                            initialValue: "void",
                             textAlign: TextAlign.center,
                             decoration:
                                 InputDecoration(labelText: "Password :"),
