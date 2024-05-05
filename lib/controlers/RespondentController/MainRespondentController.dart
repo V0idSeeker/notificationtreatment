@@ -61,10 +61,12 @@ class MainRespondentController extends GetxController{
   //reports manegment
 
   Future<void>getReports() async {
+
     if(reportsList==null) {
       reportsList = await db.getRespondentReports(respondent.city);
       update(["ReportList","ReportPositions"]);
     }
+
 
   }
   Future<bool> updateReportStatus(String mode)async{

@@ -49,7 +49,6 @@ class DatabaseManeger {
     addAccountData["command"] ="updateAccount";
     var response = await post(url, body: addAccountData);
 
-    print(response.body);
     Map<String ,dynamic> decodedResponse = jsonDecode(response.body);
     return decodedResponse["success"]==true;
 
@@ -69,7 +68,7 @@ class DatabaseManeger {
 
   //reports section
   Future<List<Report>>getRespondentReports(String city) async {
-    print (city);
+
 
     var response = await post(url, body: {"command": "getRespondentReports", "city": city });
 

@@ -52,6 +52,7 @@ class LogIn extends StatelessWidget {
                           ),
                           TextFormField(
                             textAlign: TextAlign.center,
+                            obscureText: true,
                             decoration:
                                 InputDecoration(labelText: "Password :"),
                             validator: (value) {
