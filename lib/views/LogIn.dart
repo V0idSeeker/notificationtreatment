@@ -122,6 +122,41 @@ class LogIn extends StatelessWidget {
                 ),
               ),
             ),
+            floatingActionButton: ElevatedButton(
+              onPressed: () {
+                String val=controller.getIp();
+                Get.dialog(AlertDialog(
+                  title: Text("Change Ip address"),
+                  content: TextFormField(
+                    initialValue: val,
+                    onChanged: (value){
+                      val=value;
+
+                    },
+                  ),
+                  actions: [
+                    ElevatedButton(onPressed: ()=>Get.back(), child: Text("Cancel")),
+                    ElevatedButton(onPressed: (){
+                      bool changed=controller.changeIp(val);
+                      if(!changed){
+                        Get.snackbar("invalid Ip" ,"Ip Not Valid", snackPosition: SnackPosition.BOTTOM);
+                      }else{
+                        Get.back();
+                        Get.snackbar("Ip Changed",'' );
+
+
+                      }
+
+                    },
+                        child: Text("Submit")),
+                  ],
+
+                ));
+              },
+              child: Text("Change Ip"),
+
+
+            ),
           );
         });
   }

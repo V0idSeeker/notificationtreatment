@@ -15,6 +15,7 @@ late String username , password;
     password="";
     db=new DatabaseManeger();
 
+
   }
   @override
   void dispose() {
@@ -27,6 +28,15 @@ late String username , password;
     if(isConnected!=t)isConnected=t;
 
   }
+
+  getIp()=>db.getIp();
+
+bool changeIp(String newIp){
+if(!RegExp(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b').hasMatch(newIp)) return false ;
+db.setIp(newIp);
+return true;
+}
+
 
 
 Future<Map<String , dynamic>>logIn()async {

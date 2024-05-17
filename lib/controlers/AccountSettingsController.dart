@@ -15,6 +15,7 @@ class AccountSettingsController extends GetxController{
   @override
   onInit(){
     db=new DatabaseManeger();
+
     super.onInit();
   }
 

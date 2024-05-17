@@ -7,13 +7,13 @@ import 'Report.dart';
 
 class DatabaseManeger {
   late Uri url;
+  static late String ip="192.168.1.111";
 
   DatabaseManeger() {
     //for local
 
-      url = Uri.http("192.168.1.111", "api/index.php");
-      //for partage
-      //url=Uri.http("192.168.214.111", "api/index.php");
+      url = Uri.http(ip, "api/index.php");
+
 
   }
 
@@ -22,20 +22,24 @@ class DatabaseManeger {
     try {
       var response =await  post(url , body: {
         "command": "connectionStatus",
-      });
+      }).timeout(Duration(milliseconds: 500));
       if (response.statusCode == 200) f= true;
       else f=false;
     }catch(e){
-
       f=false;
-
-
     }
 
     return f;
 
 
   }
+  void setIp(String newIp) {
+    ip=newIp;
+    url = Uri.http(ip,"api/index.php");
+
+  }
+
+  String getIp()=>ip;
 
 
   // account section
