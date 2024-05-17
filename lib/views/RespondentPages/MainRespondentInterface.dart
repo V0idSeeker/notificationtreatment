@@ -18,7 +18,11 @@ class MainRespondentInterface extends StatelessWidget {
     return GetBuilder<MainRespondentController>(
         init: MainRespondentController(),
         builder: (controller){
+          controller.cnx();
+
+
           controller.setRespondent(respondent);
+
           return  Scaffold(
           bottomNavigationBar: BottomNavigationBar(
 
@@ -51,7 +55,7 @@ class MainRespondentInterface extends StatelessWidget {
                   if(controller.mainScreen != AccountSettings) controller.updateInterface("AccountSettings");
                   break;
                 case 4:
-                  Get.off(()=>LogIn());
+                  Get.offAll(()=>LogIn());
                   break;
 
               }
@@ -61,6 +65,8 @@ class MainRespondentInterface extends StatelessWidget {
 
               id: "interface",
               builder: (controller) {
+
+
                 return controller.mainScreen;
               }
           ),

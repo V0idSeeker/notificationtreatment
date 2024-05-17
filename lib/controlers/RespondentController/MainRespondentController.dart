@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
@@ -10,6 +12,7 @@ import '../../Modules/Fire.dart';
 import '../../Modules/Report.dart';
 import '../../Modules/Respondent.dart';
 import '../../views/AccountSettings.dart';
+import '../../views/LogIn.dart';
 import '../../views/RespondentPages/FiresMap.dart';
 import '../../views/RespondentPages/ReportManegment.dart';
 import '../../views/Stats.dart';
@@ -17,7 +20,7 @@ import '../../views/Stats.dart';
 class MainRespondentController extends GetxController{
   late Respondent respondent;
   late DatabaseManeger db ;
-  bool isOptimalFire=true;
+  bool isOptimalFire=true ,isConnected=true ;
   late Widget mainScreen;
   double reportListFraction=0.2;
   late VideoPlayerController videoPlayerController;
@@ -36,10 +39,35 @@ class MainRespondentController extends GetxController{
   Future<void> onInit() async {
     mainScreen=ReportManagement();
     db=DatabaseManeger();
-
-
-
     super.onInit();
+
+  }
+  dispose() async {
+
+    super.dispose();
+  }
+  Future<void> cnx() async {
+    bool t = await db.connectionStatus();
+
+    if(isConnected!=t)isConnected=t;
+    Timer.periodic(Duration(milliseconds: 400), (Timer timer) async {
+
+       t = await db.connectionStatus();
+
+
+      if(isConnected!=t){
+
+        print("change");
+        isConnected=t;
+        if(!isConnected) {
+          timer.cancel();
+          Get.snackbar("You have been disconected", "Connection issue");
+          Get.offAll(() => LogIn());
+
+        }
+      }
+    });
+
   }
   //interface manegment
   showList(){

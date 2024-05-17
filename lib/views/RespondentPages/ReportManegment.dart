@@ -93,6 +93,7 @@ class ReportManagement extends StatelessWidget {
                                             Report rep =
                                                 controller.reportsList![index];
                                             return ListTile(
+                                              leading: Text(rep.confidence.toString()),
                                                 title: Text(rep.addr),
                                                 subtitle: Text(
                                                     rep.reportDate.toString()),

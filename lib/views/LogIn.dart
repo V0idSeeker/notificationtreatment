@@ -66,6 +66,15 @@ class LogIn extends StatelessWidget {
                             onPressed: () async {
                               if (!formkey.currentState!.validate())
                                 return null;
+                              await controller.cnx();
+
+                              if(!controller.isConnected){
+
+                                Get.snackbar("Connection Issues", "No Connection To The Server");
+
+                                return null;
+                              }
+
                               Map<String , dynamic> data = await controller.logIn();
                               if (data["Error"]!=null || data["accountStatus"]=="disabled")
                                 Get.snackbar("", "",
@@ -81,11 +90,11 @@ class LogIn extends StatelessWidget {
                               else {
                                 if(data["accountType"]=="admin") {
                                   Admin admin=Admin.fromMap(data);
-                                  Get.to(()=>MainAdminPage(admin));
+                                  Get.offAll(()=>MainAdminPage(admin));
                                 }
                                 if(data["accountType"]=="respondent"){
                                   Respondent respondent = Respondent.fromMap(data);
-                                  Get.off(()=>MainRespondentInterface(respondent));
+                                  Get.offAll(()=>MainRespondentInterface(respondent));
 
                                 }
                                 if(data["accountType"]=="firefighter"){
@@ -104,7 +113,8 @@ class LogIn extends StatelessWidget {
                               }
                             },
                             child: Text("Submit"),
-                          )
+                          ),
+
                         ],
                       ),
                     ),

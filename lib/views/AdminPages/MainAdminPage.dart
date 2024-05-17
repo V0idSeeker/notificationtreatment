@@ -22,6 +22,7 @@ class MainAdminPage extends StatelessWidget {
         init: MainAdminController(),
         builder: (controller) {
           controller.setAdmin(admin);
+          controller.cnx();
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
 
@@ -56,7 +57,11 @@ class MainAdminPage extends StatelessWidget {
             body: GetBuilder<MainAdminController>(
               id: "interface",
               builder: (controller) {
+                if(controller.isConnected)
                 return controller.mainScreen;
+                Get.snackbar("Connection Error ", "Lost Connection");
+                Get.off(()=>LogIn());
+                return Container();
               }
             ),
           );

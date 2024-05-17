@@ -1,17 +1,20 @@
-import 'package:flutter/cupertino.dart';
+
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:notificationtreatment/Modules/DatabaseManeger.dart';
 import 'package:notificationtreatment/views/AdminPages/BrowsAccounts.dart';
-
+import "package:flutter/material.dart";
 import '../../Modules/Admin.dart';
 import '../../views/AccountSettings.dart';
+import '../../views/LogIn.dart';
 import '../../views/Stats.dart';
 
 class MainAdminController extends GetxController{
   late DatabaseManeger db ;
 late Widget mainScreen;
 late String searchParam , searchValue , searchCategory;
-bool validCity=false , validUsername =false , validPassword =false , isAdd=false;
+bool validCity=false , validUsername =false , validPassword =false , isAdd=false , isConnected=true;
 late Admin admin;
 Map<String , dynamic> addAccountData={};
 
@@ -33,9 +36,30 @@ Map<String , dynamic> addAccountData={};
   mainScreen = BrowsAccounts();
     super.onInit();
   }
+
+  Future<void> cnx() async {
+    bool t = await db.connectionStatus();
+
+    if (isConnected != t) isConnected = t;
+    Timer.periodic(Duration(milliseconds: 400), (Timer timer) async {
+      t = await db.connectionStatus();
+
+
+      if (isConnected != t) {
+        print("change");
+        isConnected = t;
+        if (!isConnected) {
+          timer.cancel();
+          Get.snackbar("You have been disconnected", "Connection issue");
+          Get.offAll(() => LogIn());
+        }
+      }
+    });
+  }
   setAdmin(Admin admin){
     this.admin=admin;
   }
+
 
   resetAddData(){
     addAccountData={
@@ -49,6 +73,8 @@ Map<String , dynamic> addAccountData={};
       "accountType":"admin"
     };
   }
+
+
 
   updateSearch(String searchParam,String searchValue,String searchCategory){
   if(searchParam==this.searchParam && searchValue==this.searchValue && searchCategory==this.searchCategory) return null;
