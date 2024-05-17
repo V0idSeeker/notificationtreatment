@@ -52,7 +52,7 @@ class FireMap extends StatelessWidget {
                                           color: e.fireStatus == "active"
                                               ? Colors.red.withOpacity(0.6)
                                               : e.fireStatus=="treated"?Colors.green.withOpacity(0.6):
-                                           Colors.blue.withOpacity(0.6),
+                                           Colors.yellow.withOpacity(0.6),
                                           useRadiusInMeter: true))
                                       .toList(),
                             )
