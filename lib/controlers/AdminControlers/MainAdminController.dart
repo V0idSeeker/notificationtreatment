@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:notificationtreatment/Modules/DatabaseManeger.dart';
+import 'package:notificationtreatment/Modules/Styler.dart';
 import 'package:notificationtreatment/views/AdminPages/BrowsAccounts.dart';
 import "package:flutter/material.dart";
 import '../../Modules/Admin.dart';
@@ -13,6 +14,8 @@ import '../../views/Stats.dart';
 class MainAdminController extends GetxController{
   late DatabaseManeger db ;
 late Widget mainScreen;
+Styler styler= Styler();
+  int index=0;
 late String searchParam , searchValue , searchCategory;
 bool validCity=false , validUsername =false , validPassword =false , isAdd=false , isConnected=true;
 late Admin admin;
@@ -50,7 +53,7 @@ Map<String , dynamic> addAccountData={};
         isConnected = t;
         if (!isConnected) {
           timer.cancel();
-          Get.snackbar("You have been disconnected", "Connection issue");
+          styler.showSnackBar("You have been disconnected", "Connection issue");
           Get.offAll(() => LogIn());
         }
       }
@@ -87,15 +90,22 @@ Map<String , dynamic> addAccountData={};
 }
 
   void updateInterface(String screenType) {
-  if(screenType=="BrowsAccounts") mainScreen=BrowsAccounts();
-  if(screenType=="Stats") mainScreen=Stats();
-  if(screenType=="AccountSettings"){
+  if(screenType=="BrowsAccounts") {
+      mainScreen = BrowsAccounts();
+  index=0;
+  }
+    if(screenType=="Stats") {
+      mainScreen = Stats();
+    index=1;
+    }
+    if(screenType=="AccountSettings"){
+      index=2;
     Map<String,dynamic> data=this.admin.toMap();
     data["accountType"]="admin";
     mainScreen=AccountSettings(data);
   };
 
-    update(["interface"]);
+    update();
   }
 
 
@@ -109,8 +119,10 @@ Map<String , dynamic> addAccountData={};
 
 
   Future<bool>manageAccount() async{
-   if(isAdd) return await addAccount();
-   else return  updateAccount();
+   var x;
+   if(isAdd) x= await addAccount();
+   else x= await  updateAccount();
+   return x;
   }
   Future<List> getAccounts()async{
   return await db.getAllAccounts(searchParam, searchValue, searchCategory);
@@ -118,12 +130,13 @@ Map<String , dynamic> addAccountData={};
   }
 
   Future<bool> addAccount()async {
-  return await db.addAccount(addAccountData);
+  bool x= await db.addAccount(addAccountData);
+  return x;
 
   }
   Future<bool> updateAccount()async {
-  return await db.updateAccount(addAccountData);
-
+  bool x =await db.updateAccount(addAccountData);
+return x;
   }
 
   deleteAccount(String id) async{

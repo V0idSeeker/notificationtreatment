@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:notificationtreatment/Modules/Admin.dart';
 import 'package:notificationtreatment/Modules/Respondent.dart';
+import 'package:notificationtreatment/Modules/Styler.dart';
 import 'package:notificationtreatment/views/AdminPages/MainAdminPage.dart';
 import 'package:notificationtreatment/controlers/LogInControler.dart';
 import 'package:notificationtreatment/views/RespondentPages/MainRespondentInterface.dart';
@@ -12,37 +12,45 @@ class LogIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Styler styler = Styler();
     return GetBuilder<LogInControler>(
         init: LogInControler(),
         builder: (controller) {
           final formkey = GlobalKey<FormState>();
 
           return Scaffold(
+
             body: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                      "https://images.pexels.com/photos/338936/pexels-photo-338936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              decoration:styler.orangeBlueBackground(),
               child: Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 4,
-                  height: MediaQuery.of(context).size.height / 4,
-                  color: Theme.of(context).primaryColorLight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(vertical: 8,horizontal: 20),
+                  child: Container(
+                    width: 400.0, // Limit the width
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color:Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
                     child: Form(
                       key: formkey,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          //Logo
+                          Image.asset('logo.png',
+                            height: 400,
+                          ),
+                          SizedBox(height: 20.0),
+                          // Welcome Text
+                          Text(
+                            'Welcome Back',
+                            style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: Theme.of(context).hintColor),
+                          ),
+                          SizedBox(height: 80.0),
+                          //Username
                           TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration:
-                                InputDecoration(labelText: "Username :"),
+                            decoration: styler.inputFormTextFieldDecoration("Username"),
                             validator: (value) {
                               if (value!.isEmpty)
                                 return "Invalid Username";
@@ -50,11 +58,11 @@ class LogIn extends StatelessWidget {
                                 controller.username = value;
                             },
                           ),
+                          SizedBox(height: 20.0),
+                          //Password
                           TextFormField(
-                            textAlign: TextAlign.center,
                             obscureText: true,
-                            decoration:
-                                InputDecoration(labelText: "Password :"),
+                            decoration: styler.inputFormTextFieldDecoration("Password"),
                             validator: (value) {
                               if (value!.isEmpty)
                                 return "Invalid Password";
@@ -62,6 +70,7 @@ class LogIn extends StatelessWidget {
                                 controller.password = value;
                             },
                           ),
+                          SizedBox(height: 20.0),
                           ElevatedButton(
                             onPressed: () async {
                               if (!formkey.currentState!.validate())
@@ -69,24 +78,16 @@ class LogIn extends StatelessWidget {
                               await controller.cnx();
 
                               if(!controller.isConnected){
+                                styler.showSnackBar("Connection Issues", "No Connection To The Server");
 
-                                Get.snackbar("Connection Issues", "No Connection To The Server");
 
                                 return null;
                               }
 
                               Map<String , dynamic> data = await controller.logIn();
                               if (data["Error"]!=null || data["accountStatus"]=="disabled")
-                                Get.snackbar("", "",
-                                    maxWidth:
-                                        MediaQuery.of(context).size.width / 4,
-                                    titleText: Text("Error Logging in"),
-                                    duration: Duration(seconds: 2),
-                                    backgroundColor: Colors.blue,
-                                    colorText: Colors.white,
-                                    messageText: Text(data["Error"]!=null ? data["Error"] : "Account is disabled"   ),
+                                styler.showSnackBar("Error Logging in", data["Error"]!=null ? data["Error"] : "Account is disabled");
 
-                                    showProgressIndicator: true);
                               else {
                                 if(data["accountType"]=="admin") {
                                   Admin admin=Admin.fromMap(data);
@@ -98,21 +99,22 @@ class LogIn extends StatelessWidget {
 
                                 }
                                 if(data["accountType"]=="firefighter"){
-                                  Get.snackbar("", "",
-                                      maxWidth:
-                                      MediaQuery.of(context).size.width / 4,
-                                      titleText: Text("Access Denied"),
-                                      duration: Duration(seconds: 2),
-                                      backgroundColor: Colors.blue,
-                                      colorText: Colors.white,
-                                      messageText: Text("Access to Fire Fighter is Only Available throw the Mobile App"  ),
+                                  styler.showSnackBar("Access Denied","Access to Fire Fighter is Only Available throw the Mobile App");
 
-                                      showProgressIndicator: true);
 
                                 }
                               }
                             },
-                            child: Text("Submit"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                            child: Text("Login",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
 
                         ],
@@ -123,35 +125,78 @@ class LogIn extends StatelessWidget {
               ),
             ),
             floatingActionButton: ElevatedButton(
+              style: styler.dialogButtonStyle(),
+
               onPressed: () {
                 String val=controller.getIp();
-                Get.dialog(AlertDialog(
-                  title: Text("Change Ip address"),
-                  content: TextFormField(
-                    initialValue: val,
-                    onChanged: (value){
-                      val=value;
+                styler.showDialogUnRemoved(title:"Change Ip address",
+                    content:TextFormField(
+                      decoration:styler.inputFormTextFieldDecoration("Ip address"),
+                      style: TextStyle(color: Get.theme.textTheme.bodyText1?.color),
+                      initialValue: val,
+                      onChanged: (value){
+                        val=value;
+                      },
+                    ),
+                    actions :[
+                      ElevatedButton(
+                          style: styler.dialogButtonStyle(),
+                          onPressed: ()=>Get.back(),
+                          child: Text("Cancel")),
+                      ElevatedButton(
+                          onPressed: (){
+                            bool changed=controller.changeIp(val);
+                            if(!changed){
+                              Get.snackbar("invalid Ip" ,"Ip Not Valid",
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  colorText: Theme.of(context).colorScheme.background,
+                                  borderRadius: 10,
+                                  margin: EdgeInsets.all(16),
+                                  duration: Duration(seconds: 3),
+                                  icon: Icon(
+                                    Icons.error_outline,
+                                    color: Theme.of(context).colorScheme.background,
+                                  ),
+                                  snackStyle: SnackStyle.FLOATING,
+                                  overlayBlur: 0.2,
+                                  overlayColor: Colors.black.withOpacity(0.3),
+                                  barBlur: 10,
+                                  isDismissible: true,
+                                  forwardAnimationCurve: Curves.easeOutBack,
+                                  reverseAnimationCurve: Curves.easeInBack,
 
-                    },
-                  ),
-                  actions: [
-                    ElevatedButton(onPressed: ()=>Get.back(), child: Text("Cancel")),
-                    ElevatedButton(onPressed: (){
-                      bool changed=controller.changeIp(val);
-                      if(!changed){
-                        Get.snackbar("invalid Ip" ,"Ip Not Valid", snackPosition: SnackPosition.BOTTOM);
-                      }else{
-                        Get.back();
-                        Get.snackbar("Ip Changed",'' );
+                                  showProgressIndicator: true
+                              );
+                            }else{
+                              Get.back();
+                              Get.snackbar("Ip Changed",'',backgroundColor: Theme.of(context).primaryColor,
+                                  colorText: Theme.of(context).colorScheme.background,
+                                  borderRadius: 10,
+                                  margin: EdgeInsets.all(16),
+                                  duration: Duration(seconds: 3),
+                                  icon: Icon(
+                                    Icons.error_outline,
+                                    color: Theme.of(context).colorScheme.background,
+                                  ),
+                                  snackStyle: SnackStyle.FLOATING,
+                                  overlayBlur: 0.2,
+                                  overlayColor: Colors.black.withOpacity(0.3),
+                                  barBlur: 10,
+                                  isDismissible: true,
+                                  forwardAnimationCurve: Curves.easeOutBack,
+                                  reverseAnimationCurve: Curves.easeInBack,
+
+                                  showProgressIndicator: true );
 
 
-                      }
+                            }
 
-                    },
-                        child: Text("Submit")),
-                  ],
+                          },
+                          style: styler.dialogButtonStyle(),
+                          child: Text("Submit")),
+                    ]
+                    );
 
-                ));
               },
               child: Text("Change Ip"),
 

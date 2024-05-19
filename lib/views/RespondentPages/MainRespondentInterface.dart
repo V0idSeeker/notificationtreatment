@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notificationtreatment/Modules/Styler.dart';
 import 'package:notificationtreatment/controlers/RespondentController/MainRespondentController.dart';
 import 'package:notificationtreatment/views/RespondentPages/FiresMap.dart';
 import 'package:notificationtreatment/views/RespondentPages/ReportManegment.dart';
@@ -15,6 +16,7 @@ class MainRespondentInterface extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Styler styler = Styler();
     return GetBuilder<MainRespondentController>(
         init: MainRespondentController(),
         builder: (controller){
@@ -24,7 +26,9 @@ class MainRespondentInterface extends StatelessWidget {
           controller.setRespondent(respondent);
 
           return  Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
+
+          bottomNavigationBar: styler.bottomNavigationBar(
+          currentIndex: controller.index,
 
             items: [
               BottomNavigationBarItem(
@@ -40,6 +44,8 @@ class MainRespondentInterface extends StatelessWidget {
               BottomNavigationBarItem(icon: Icon(Icons.logout,color: Colors.blue,), label: "Logout"),
             ],
             onTap: (dest) {
+
+
               switch (dest) {
                 case 0:
                   if(controller.mainScreen != ReportManagement  )controller.updateInterface("ReportManagement");

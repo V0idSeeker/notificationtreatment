@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:notificationtreatment/Modules/Styler.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../Modules/DatabaseManeger.dart';
@@ -21,10 +22,12 @@ class MainRespondentController extends GetxController{
   late Respondent respondent;
   late DatabaseManeger db ;
   bool isOptimalFire=true ,isConnected=true ;
+  int index=0;
   late Widget mainScreen;
   double reportListFraction=0.2;
   late VideoPlayerController videoPlayerController;
   late AudioPlayer audioPlayer =AudioPlayer();
+  final Styler styler = Styler();
 
   List<Report>? reportsList=null;
   List<Fire>? activeFiresList=null , allFiresList=null;
@@ -61,7 +64,8 @@ class MainRespondentController extends GetxController{
         isConnected=t;
         if(!isConnected) {
           timer.cancel();
-          Get.snackbar("You have been disconected", "Connection issue");
+
+          styler.showSnackBar("You have been disconected", "Connection issue");
           Get.offAll(() => LogIn());
 
         }
@@ -75,15 +79,23 @@ class MainRespondentController extends GetxController{
     update(["ReportManagement"]);
   }
   void updateInterface(String screenType) {
-    if(screenType=="ReportManagement") mainScreen=ReportManagement();
-    if(screenType=="Stats") mainScreen=Stats();
-    if(screenType=="FireMap")mainScreen=FireMap();
+    if(screenType=="ReportManagement"){ mainScreen=ReportManagement();index=0;}
+    if(screenType=="FireMap") {
+      mainScreen = FireMap();
+      index = 1;
+    }
+    if(screenType=="Stats") {
+      mainScreen = Stats();
+      index = 2;
+    }
+
     if(screenType=="AccountSettings"){
       Map<String,dynamic> data=this.respondent.toMap();
       data["accountType"]="respondent";
+      index=3;
       mainScreen=AccountSettings(data);
     };
-    update(["interface"]);
+    update();
   }
 
   //reports manegment
@@ -130,6 +142,7 @@ class MainRespondentController extends GetxController{
     videoPlayerController = VideoPlayerController.networkUrl(
         Uri.http(
             "192.168.1.111" ,"api/${selectedReport.resourcePath}"));
+
     await videoPlayerController.initialize();
 
   }
@@ -166,7 +179,7 @@ class MainRespondentController extends GetxController{
 
 
     if(isInValid ==(selectedReport.reportStatus=="valid"))
-      update(["ReviewReport"]);
+      update(["addToFire"]);
 
 
   }

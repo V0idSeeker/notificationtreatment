@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:notificationtreatment/Modules/Styler.dart';
 import 'package:notificationtreatment/controlers/AdminControlers/MainAdminController.dart';
 import 'package:notificationtreatment/views/AccountSettings.dart';
 import 'package:notificationtreatment/views/AdminPages/BrowsAccounts.dart';
@@ -11,6 +12,7 @@ import '../../Modules/Admin.dart';
 
 class MainAdminPage extends StatelessWidget {
   Admin admin;
+  final styler = Styler();
   MainAdminPage(
     this.admin, {
     super.key,
@@ -24,7 +26,9 @@ class MainAdminPage extends StatelessWidget {
           controller.setAdmin(admin);
           controller.cnx();
           return Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
+            bottomNavigationBar: styler.bottomNavigationBar (
+                currentIndex: controller.index,
+
 
               items: [
                 BottomNavigationBarItem(
@@ -48,11 +52,11 @@ class MainAdminPage extends StatelessWidget {
                     if(controller.mainScreen != AccountSettings) controller.updateInterface("AccountSettings");
                     break;
                   case 3:
-                    Get.off(()=>LogIn());
+                    Get.offAll(()=>LogIn());
                     break;
 
                 }
-              },
+              }
             ),
             body: GetBuilder<MainAdminController>(
               id: "interface",

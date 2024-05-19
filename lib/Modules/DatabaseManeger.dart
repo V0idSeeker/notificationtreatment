@@ -219,6 +219,7 @@ class DatabaseManeger {
       "command":"latLongToCity"
 
     });
+    print(response.body);
     return jsonDecode(response.body);
 
   }
