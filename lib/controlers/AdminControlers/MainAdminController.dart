@@ -53,6 +53,7 @@ Map<String , dynamic> addAccountData={};
         isConnected = t;
         if (!isConnected) {
           timer.cancel();
+          index=0;
           styler.showSnackBar("You have been disconnected", "Connection issue");
           Get.offAll(() => LogIn());
         }

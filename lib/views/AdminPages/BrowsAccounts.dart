@@ -167,7 +167,7 @@ class BrowsAccounts extends StatelessWidget {
                                 Divider(),
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.height / 1.3,
+                                      MediaQuery.of(context).size.height / 1.4,
                                   child: ListView.separated(
                                     separatorBuilder: (context, index) =>
                                         Divider(),

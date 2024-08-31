@@ -32,15 +32,99 @@ class MainRespondentInterface extends StatelessWidget {
 
             items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.report,color: Colors.blue,),
+                  icon: Container(
+                      decoration: BoxDecoration(
+                        color: controller.index == 0
+                            ? Colors.grey.shade200
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: controller.index == 0
+                            ? [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          ),
+                        ]
+                            : [],
+                      ),
+                      child: Padding(
+                        padding:
+                        EdgeInsets.all(controller.index == 0 ? 8.0 : 0.0),
+                        child: Icon(Icons.report,color: Colors.blue,),
+                      )),
+
                   label: "Manege Reports"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.local_fire_department_sharp,color: Colors.blue,),
+                  icon: Container(
+                      decoration: BoxDecoration(
+                        color: controller.index == 1
+                            ? Colors.grey.shade200
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: controller.index == 1
+                            ? [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          ),
+                        ]
+                            : [],
+                      ),
+                      child: Padding(
+                        padding:
+                        EdgeInsets.all(controller.index == 1 ? 8.0 : 0.0),
+                        child: Icon(Icons.local_fire_department_sharp,color: Colors.blue,),
+                      )),
                   label: "Consult Fires"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.query_stats,color: Colors.blue,), label: "Stats"),
+                  icon: Container(
+                      decoration: BoxDecoration(
+                        color: controller.index == 2
+                            ? Colors.grey.shade200
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: controller.index == 2
+                            ? [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          ),
+                        ]
+                            : [],
+                      ),
+                      child: Padding(
+                        padding:
+                        EdgeInsets.all(controller.index == 2 ? 8.0 : 0.0),
+                        child: Icon(Icons.query_stats,color: Colors.blue,),
+                      )),
+                   label: "Stats"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.settings,color: Colors.blue,), label: "Settings"),
+                  icon: Container(
+                      decoration: BoxDecoration(
+                        color: controller.index == 3
+                            ? Colors.grey.shade200
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: controller.index == 3
+                            ? [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          ),
+                        ]
+                            : [],
+                      ),
+                      child: Padding(
+                        padding:
+                        EdgeInsets.all(controller.index == 3 ? 8.0 : 0.0),
+                        child: Icon(Icons.settings,color: Colors.blue,),
+                      )),
+              label: "Settings",),
+
               BottomNavigationBarItem(icon: Icon(Icons.logout,color: Colors.blue,), label: "Logout"),
             ],
             onTap: (dest) {
@@ -67,7 +151,26 @@ class MainRespondentInterface extends StatelessWidget {
               }
             },
           ),
-          body: GetBuilder<MainRespondentController>(
+          body: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              double minWidth = 1280;
+              double minHeight = 1000;
+              return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: minWidth > constraints.maxWidth
+                          ? minWidth
+                          : constraints.maxWidth,
+                      minHeight: minHeight > constraints.maxHeight
+                          ? minHeight
+                          : constraints.maxHeight,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        width: minWidth,
+                        height: minHeight,
+                        child:GetBuilder<MainRespondentController>(
 
               id: "interface",
               builder: (controller) {
@@ -76,6 +179,13 @@ class MainRespondentInterface extends StatelessWidget {
                 return controller.mainScreen;
               }
           ),
+          ),
+          ),
+          ));
+        }
+
+      ,
+    )
           );
 
 

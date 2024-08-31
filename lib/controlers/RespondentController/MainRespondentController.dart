@@ -32,7 +32,7 @@ class MainRespondentController extends GetxController{
   List<Report>? reportsList=null;
   List<Fire>? activeFiresList=null , allFiresList=null;
   late Report selectedReport;
-  MapOptions mapOptions=MapOptions(center: LatLng(0,0) ,zoom: 4);
+  MapOptions mapOptions=MapOptions(initialCenter: LatLng(0,0) ,initialZoom: 4);
   MapController mapController=new MapController();
    LatLng respondentCenter=LatLng(0,0);
   setRespondent(Respondent respondent)  {
@@ -64,11 +64,28 @@ class MainRespondentController extends GetxController{
         isConnected=t;
         if(!isConnected) {
           timer.cancel();
+          index=0;
 
           styler.showSnackBar("You have been disconected", "Connection issue");
           Get.offAll(() => LogIn());
 
         }
+      }
+       bool reportUpdate=await db.checkReportsUpdate(respondent.city);
+       bool fireUpdate = await db.checkFiresUpdate(respondent.city);
+       print("$fireUpdate and $reportUpdate");
+      if(reportUpdate && fireUpdate){
+        styler.showSnackBar("Fires and Reports Updates !!", "");
+        update(["ReportManagement","FireManagement"]);
+      }
+      else if(reportUpdate && !fireUpdate){
+        styler.showSnackBar("Reports Updates !!", "");
+        update(["ReportManagement"]);
+      }
+      else if(!reportUpdate && fireUpdate){
+        styler.showSnackBar("Fires Updates !!","");
+        update(["FireManagement"]);
+
       }
     });
 

@@ -16,13 +16,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Styler styler= Styler();
-    return GetMaterialApp(
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      double minWidth = 1280;
+      double minHeight = 1000;
+      return  GetMaterialApp(
 
 
-      title: 'Flutter Demo',
-      theme: styler.themeData,
-      home: MyHomePage(),
-    );
+
+                title: 'WildFire Desk',
+                theme: styler.themeData,
+                home: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: ConstrainedBox(
+
+                    constraints: BoxConstraints(
+                      minWidth: minWidth > constraints.maxWidth
+                          ? minWidth
+                          : constraints.maxWidth,
+                      minHeight: minHeight > constraints.maxHeight
+                          ? minHeight
+                          : constraints.maxHeight,
+                    ),
+                    child:SingleChildScrollView(
+                      child: Container(
+                        width: minWidth,
+                        height: minHeight,
+                        child:MyHomePage(),),
+            ) ,
+          ),
+        )
+              )
+            ;
+
+    },);
   }
 }
 

@@ -268,9 +268,9 @@ class ReviewReport extends StatelessWidget {
               children: [
                 Expanded(
                   child: DropdownButtonFormField(
-                    items: [
+                    items: [ DropdownMenuItem(value: null, child: Text("New Fire")),
                       ...controller.activeFiresList!.map((e) => DropdownMenuItem(value: e.fireId, child: Text(e.optimalAddr))),
-                      DropdownMenuItem(value: null, child: Text("New Fire")),
+                     
                     ],
                     onChanged: (value) {
                       controller.selectedReport.fireId = int.tryParse(value.toString());
@@ -282,7 +282,7 @@ class ReviewReport extends StatelessWidget {
                 SizedBox(width: 16),
                 Expanded(
                   child: DropdownButtonFormField(
-                    value: controller.selectedReport.fireId == null ? true : false,
+                    value: controller.selectedReport.fireId == null ,
                     decoration: styler.inputDecoration("Set As Optimal"),
                     items: controller.selectedReport.fireId == null
                         ? [DropdownMenuItem(value: true, child: Text("True"))]

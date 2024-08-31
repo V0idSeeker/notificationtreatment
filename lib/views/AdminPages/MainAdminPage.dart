@@ -26,49 +26,170 @@ class MainAdminPage extends StatelessWidget {
           controller.setAdmin(admin);
           controller.cnx();
           return Scaffold(
-            bottomNavigationBar: styler.bottomNavigationBar (
-                currentIndex: controller.index,
-
-
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.manage_accounts,color: Colors.blue,),
-                    label: "Manege Accounts"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.query_stats ,color: Colors.blue,), label: "Stats"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.settings,color: Colors.blue,), label: "Settings"),
-                BottomNavigationBarItem(icon: Icon(Icons.logout,color: Colors.blue,), label: "Logout"),
-              ],
-              onTap: (dest) {
-                switch (dest) {
-                  case 0:
-                    if(controller.mainScreen != BrowsAccounts  )controller.updateInterface("BrowsAccounts");
-                    break ;
-                  case 1:
-                    if(controller.mainScreen != Stats  )controller.updateInterface("Stats");
-                    break;
-                  case 2:
-                    if(controller.mainScreen != AccountSettings) controller.updateInterface("AccountSettings");
-                    break;
-                  case 3:
-                    Get.offAll(()=>LogIn());
-                    break;
-
+              bottomNavigationBar: styler.bottomNavigationBar(
+                  currentIndex: controller.index,
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: Container(
+                            decoration: BoxDecoration(
+                              color: controller.index == 0
+                                  ? Colors.grey.shade200
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: controller.index == 0
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ]
+                                  : [],
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  controller.index == 0 ? 8.0 : 0.0),
+                              child: Icon(
+                                Icons.manage_accounts,
+                                color: Colors.blue,
+                              ),
+                            )),
+                        label: "Manege Accounts"),
+                    BottomNavigationBarItem(
+                        icon: Container(
+                            decoration: BoxDecoration(
+                              color: controller.index == 1
+                                  ? Colors.grey.shade200
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: controller.index == 1
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ]
+                                  : [],
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  controller.index == 1 ? 8.0 : 0.0),
+                              child: Icon(
+                                Icons.query_stats,
+                                color: Colors.blue,
+                              ),
+                            )),
+                        label: "Stats"),
+                    BottomNavigationBarItem(
+                        icon: Container(
+                            decoration: BoxDecoration(
+                              color: controller.index == 2
+                                  ? Colors.grey.shade200
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: controller.index == 2
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ]
+                                  : [],
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  controller.index == 2 ? 8.0 : 0.0),
+                              child: Icon(
+                                Icons.settings,
+                                color: Colors.blue,
+                              ),
+                            )),
+                        label: "Settings"),
+                    BottomNavigationBarItem(
+                        icon: Container(
+                            decoration: BoxDecoration(
+                              color: controller.index == 3
+                                  ? Colors.grey.shade200
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: controller.index == 3
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ]
+                                  : [],
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  controller.index == 3 ? 8.0 : 0.0),
+                              child: Icon(
+                                Icons.logout,
+                                color: Colors.blue,
+                              ),
+                            )),
+                        label: "Logout"),
+                  ],
+                  onTap: (dest) {
+                    switch (dest) {
+                      case 0:
+                        if (controller.mainScreen != BrowsAccounts)
+                          controller.updateInterface("BrowsAccounts");
+                        break;
+                      case 1:
+                        if (controller.mainScreen != Stats)
+                          controller.updateInterface("Stats");
+                        break;
+                      case 2:
+                        if (controller.mainScreen != AccountSettings)
+                          controller.updateInterface("AccountSettings");
+                        break;
+                      case 3:
+                        Get.offAll(() => LogIn());
+                        break;
+                    }
+                  }),
+              body: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  double minWidth = 1280;
+                  double minHeight = 1000;
+                  return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minWidth: minWidth > constraints.maxWidth
+                              ? minWidth
+                              : constraints.maxWidth,
+                          minHeight: minHeight > constraints.maxHeight
+                              ? minHeight
+                              : constraints.maxHeight,
+                        ),
+                        child: SingleChildScrollView(
+                          child: Container(
+                            width: minWidth,
+                            height: minHeight,
+                            child: GetBuilder<MainAdminController>(
+                              id: "interface",
+                              builder: (controller) {
+                                if (controller.isConnected)
+                                  return controller.mainScreen;
+                                Get.snackbar(
+                                    "Connection Error ", "Lost Connection");
+                                Get.off(() => LogIn());
+                                return Container();
+                              },
+                            ),
+                          ),
+                        ),
+                      ));
                 }
-              }
-            ),
-            body: GetBuilder<MainAdminController>(
-              id: "interface",
-              builder: (controller) {
-                if(controller.isConnected)
-                return controller.mainScreen;
-                Get.snackbar("Connection Error ", "Lost Connection");
-                Get.off(()=>LogIn());
-                return Container();
-              }
-            ),
-          );
+
+                ,
+              ));
         });
   }
 }

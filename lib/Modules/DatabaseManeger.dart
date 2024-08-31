@@ -8,6 +8,7 @@ import 'Report.dart';
 class DatabaseManeger {
   late Uri url;
   static late String ip="192.168.1.111";
+  static DateTime currentTime=DateTime.now();
 
   DatabaseManeger() {
     //for local
@@ -22,7 +23,7 @@ class DatabaseManeger {
     try {
       var response =await  post(url , body: {
         "command": "connectionStatus",
-      }).timeout(Duration(milliseconds: 500));
+      }).timeout(Duration(seconds: 7,milliseconds: 500));
       if (response.statusCode == 200) f= true;
       else f=false;
     }catch(e){
@@ -33,10 +34,45 @@ class DatabaseManeger {
 
 
   }
+  Future<bool> checkReportsUpdate(String city)async{
+    bool f;
+
+    try {
+      var response =await  post(url , body: {
+        "command": "reportsListUpdate",
+        "city": city
+      }).timeout(Duration(seconds: 7,milliseconds: 500));
+      print(" response is : ${response.body}");
+       Map<String , dynamic> decodedResponse = jsonDecode(response.body);
+
+       f= currentTime.isBefore(DateTime.parse(decodedResponse["lastReport"].toString()));
+       print("last update : $currentTime}");
+
+
+    }catch(e){
+      print(e.toString());
+      f=false;
+    }
+    return f;
+  }
+  Future<bool> checkFiresUpdate(String city)async{
+    bool f;
+    try {
+      var response =await  post(url , body: {
+        "command": "firesListUpdate",
+        "city": city
+      }).timeout(Duration(seconds: 7,milliseconds: 500));
+      Map<String , dynamic> decodedResponse = jsonDecode(response.body);
+      f= currentTime.isBefore(DateTime.parse(decodedResponse["lastFire"].toString()));
+    }catch(e){
+      f=false;
+    }
+    return f;
+  }
+
   void setIp(String newIp) {
     ip=newIp;
     url = Uri.http(ip,"api/index.php");
-
   }
 
   String getIp()=>ip;
@@ -87,6 +123,7 @@ class DatabaseManeger {
   //fire section
   Future<List<Fire>> getAllLocalFires(String city) async {
     var response = await post(url, body: {"command": "getAllLocalFires" , "city": city});
+    currentTime=DateTime.now();
 
     List<dynamic> decodedResponse = jsonDecode(response.body);
     List<Fire> listOfFires = decodedResponse.map((item) {
@@ -98,7 +135,7 @@ class DatabaseManeger {
   //reports section
   Future<List<Report>>getRespondentReports(String city) async {
 
-
+    currentTime=DateTime.now();
     var response = await post(url, body: {"command": "getRespondentReports", "city": city });
 
 
@@ -134,6 +171,7 @@ class DatabaseManeger {
     List<Fire> listOfActiveFires = decodedResponse.map((item) {
       return Fire.fromMap(item);
     }).toList();
+    currentTime=DateTime.now();
     return listOfActiveFires;
   }
   Future<void> addNewFire(Fire fire , int reportId)async{

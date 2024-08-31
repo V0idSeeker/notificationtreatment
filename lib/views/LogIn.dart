@@ -44,7 +44,7 @@ class LogIn extends StatelessWidget {
                           SizedBox(height: 20.0),
                           // Welcome Text
                           Text(
-                            'Welcome Back',
+                            'WildFire Desk',
                             style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: Theme.of(context).hintColor),
                           ),
                           SizedBox(height: 80.0),
@@ -132,7 +132,7 @@ class LogIn extends StatelessWidget {
                 styler.showDialogUnRemoved(title:"Change Ip address",
                     content:TextFormField(
                       decoration:styler.inputFormTextFieldDecoration("Ip address"),
-                      style: TextStyle(color: Get.theme.textTheme.bodyText1?.color),
+                      style: TextStyle(color: Get.theme.textTheme.bodyMedium?.color),
                       initialValue: val,
                       onChanged: (value){
                         val=value;

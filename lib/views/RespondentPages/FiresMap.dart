@@ -46,7 +46,7 @@ class FireMap extends StatelessWidget {
                                 )
                               ],
                             ),
-                            CircleLayer(
+                            CircleLayer<Object>(
                               circles: controller.allFiresList == null
                                   ? []
                                   : controller.allFiresList!.map((fire) => CircleMarker(

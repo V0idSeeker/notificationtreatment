@@ -55,7 +55,7 @@ class ReportManagement extends StatelessWidget {
                             GetBuilder<MainRespondentController>(
                               id: "ReportPositions",
                               builder: (controller) {
-                                return CircleLayer(
+                                return CircleLayer<Object>(
                                   circles: controller.reportsList == null
                                       ? []
                                       : controller.reportsList!.map(
@@ -135,7 +135,7 @@ class ReportManagement extends StatelessWidget {
                                       Get.to(() => ReviewReport());
                                     },
                                     style: styler.editButtonStyle(),
-                                    child: Text("Edit"),
+                                    child:Icon(Icons.remove_red_eye_rounded),
                                   ),
                                 ),
                               );

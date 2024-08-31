@@ -16,7 +16,7 @@ class Styler {
       primaryColor: primaryColor,
       hintColor: secondaryColor,
       scaffoldBackgroundColor: lightGreyBackgroundColor,
-      errorColor: errorColor,
+      cardColor: errorColor,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: accentColor,
         background: backgroundColor,
@@ -124,8 +124,7 @@ class Styler {
       items: items,
     );
   ButtonStyle editButtonStyle() => ElevatedButton.styleFrom(
-    primary: accentColor, // Using accent color for visibility
-    onPrimary: backgroundColor, // Text color
+    foregroundColor: backgroundColor, backgroundColor: accentColor, // Text color
     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8),
@@ -152,8 +151,7 @@ class Styler {
   );
 
   ButtonStyle elevatedButtonStyle() => ElevatedButton.styleFrom(
-    primary: primaryColor,
-    onPrimary: backgroundColor,
+    foregroundColor: backgroundColor, backgroundColor: primaryColor,
     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8),
@@ -162,8 +160,7 @@ class Styler {
   );
 
   ButtonStyle textButtonStyle() => TextButton.styleFrom(
-    primary: primaryColor,
-    textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+    foregroundColor: primaryColor, textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
   );
 
   TextStyle labelTextStyle() => TextStyle(
